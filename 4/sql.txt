@@ -1,0 +1,207 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost
+-- Generation Time: May 09, 2023 at 10:33 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `pelatihan_hendevane`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Materi_Pelatihan`
+--
+
+CREATE TABLE `Materi_Pelatihan` (
+  `ID_Materi` int(11) NOT NULL,
+  `ID_Narasumber` int(11) DEFAULT NULL,
+  `ID_Pelatihan` int(11) DEFAULT NULL,
+  `Judul_Materi` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `Materi_Pelatihan`
+--
+
+INSERT INTO `Materi_Pelatihan` (`ID_Materi`, `ID_Narasumber`, `ID_Pelatihan`, `Judul_Materi`) VALUES
+(1, 1, 1, 'Social Media Marketing'),
+(2, 1, 2, 'Financial Planning'),
+(3, 3, 1, 'Membangun Toko Online'),
+(4, 3, 3, 'Pengenalan Bisnis Online');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Narasumber`
+--
+
+CREATE TABLE `Narasumber` (
+  `ID_Narasumber` int(11) NOT NULL,
+  `Nama_Narasumber` varchar(255) DEFAULT NULL,
+  `Bidang_Keahlian` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `Narasumber`
+--
+
+INSERT INTO `Narasumber` (`ID_Narasumber`, `Nama_Narasumber`, `Bidang_Keahlian`) VALUES
+(1, 'Ahmad Saleh', 'Digital Marketing'),
+(2, 'Lisa Anjani', 'Keuangan'),
+(3, 'Dewi Kusuma', 'Bisnis Online');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Pelatihan`
+--
+
+CREATE TABLE `Pelatihan` (
+  `ID_Pelatihan` int(11) NOT NULL,
+  `Tanggal_Mulai` date DEFAULT NULL,
+  `Tanggal_Selesai` date DEFAULT NULL,
+  `Judul_Pelatihan` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `Pelatihan`
+--
+
+INSERT INTO `Pelatihan` (`ID_Pelatihan`, `Tanggal_Mulai`, `Tanggal_Selesai`, `Judul_Pelatihan`) VALUES
+(1, '2023-06-01', '2023-06-03', 'Pengenalan Bisnis Online'),
+(2, '2023-07-10', '2023-07-15', 'Strategi Pemasaran Digital'),
+(3, '2023-08-05', '2023-08-06', 'Manajemen Keuangan Bisnis');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Pendaftaran`
+--
+
+CREATE TABLE `Pendaftaran` (
+  `ID_Pendaftaran` int(11) NOT NULL,
+  `ID_Pelatihan` int(11) DEFAULT NULL,
+  `Nama_Peserta` varchar(255) DEFAULT NULL,
+  `Jabatan` varchar(255) DEFAULT NULL,
+  `Departemen` varchar(255) DEFAULT NULL,
+  `Tanggal_Pendaftaran` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `Pendaftaran`
+--
+
+INSERT INTO `Pendaftaran` (`ID_Pendaftaran`, `ID_Pelatihan`, `Nama_Peserta`, `Jabatan`, `Departemen`, `Tanggal_Pendaftaran`) VALUES
+(1, 1, 'Budi Santoso', 'Manager', 'Pemasaran', '2023-05-25'),
+(2, 1, 'Siti Rahayu', 'Staf', 'Pemasaran', '2023-05-26'),
+(3, 1, 'Andi Kusuma', 'Manager', 'Keuangan', '2023-05-27'),
+(4, 2, 'Susi Susanti', 'Staf', 'Pemasaran', '2023-06-01'),
+(5, 2, 'Ahmad Yusuf', 'Manager', 'Pemasaran', '2023-06-01');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Presensi`
+--
+
+CREATE TABLE `Presensi` (
+  `ID_Presensi` int(11) NOT NULL,
+  `ID_Pelatihan` int(11) DEFAULT NULL,
+  `ID_Pendaftaran` int(11) DEFAULT NULL,
+  `Tanggal_Pelatihan` date DEFAULT NULL,
+  `Status_Hadir` varchar(5) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `Presensi`
+--
+
+INSERT INTO `Presensi` (`ID_Presensi`, `ID_Pelatihan`, `ID_Pendaftaran`, `Tanggal_Pelatihan`, `Status_Hadir`) VALUES
+(1, 1, 1, '2023-06-01', 'Hadir'),
+(2, 1, 2, '2023-06-01', 'Hadir'),
+(3, 1, 3, '2023-06-02', 'Hadir'),
+(4, 2, 4, '2023-07-10', 'Hadir'),
+(5, 2, 5, '2023-07-10', 'Hadir');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `Materi_Pelatihan`
+--
+ALTER TABLE `Materi_Pelatihan`
+  ADD PRIMARY KEY (`ID_Materi`),
+  ADD KEY `ID_Narasumber` (`ID_Narasumber`),
+  ADD KEY `ID_Pelatihan` (`ID_Pelatihan`);
+
+--
+-- Indexes for table `Narasumber`
+--
+ALTER TABLE `Narasumber`
+  ADD PRIMARY KEY (`ID_Narasumber`);
+
+--
+-- Indexes for table `Pelatihan`
+--
+ALTER TABLE `Pelatihan`
+  ADD PRIMARY KEY (`ID_Pelatihan`);
+
+--
+-- Indexes for table `Pendaftaran`
+--
+ALTER TABLE `Pendaftaran`
+  ADD PRIMARY KEY (`ID_Pendaftaran`),
+  ADD KEY `ID_Pelatihan` (`ID_Pelatihan`);
+
+--
+-- Indexes for table `Presensi`
+--
+ALTER TABLE `Presensi`
+  ADD PRIMARY KEY (`ID_Presensi`),
+  ADD KEY `ID_Pelatihan` (`ID_Pelatihan`),
+  ADD KEY `ID_Pendaftaran` (`ID_Pendaftaran`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `Materi_Pelatihan`
+--
+ALTER TABLE `Materi_Pelatihan`
+  ADD CONSTRAINT `Materi_Pelatihan_ibfk_1` FOREIGN KEY (`ID_Narasumber`) REFERENCES `Narasumber` (`ID_Narasumber`),
+  ADD CONSTRAINT `Materi_Pelatihan_ibfk_2` FOREIGN KEY (`ID_Pelatihan`) REFERENCES `Pelatihan` (`ID_Pelatihan`);
+
+--
+-- Constraints for table `Pendaftaran`
+--
+ALTER TABLE `Pendaftaran`
+  ADD CONSTRAINT `Pendaftaran_ibfk_1` FOREIGN KEY (`ID_Pelatihan`) REFERENCES `Pelatihan` (`ID_Pelatihan`);
+
+--
+-- Constraints for table `Presensi`
+--
+ALTER TABLE `Presensi`
+  ADD CONSTRAINT `Presensi_ibfk_1` FOREIGN KEY (`ID_Pelatihan`) REFERENCES `Pelatihan` (`ID_Pelatihan`),
+  ADD CONSTRAINT `Presensi_ibfk_2` FOREIGN KEY (`ID_Pendaftaran`) REFERENCES `Pendaftaran` (`ID_Pendaftaran`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -1,0 +1,75 @@
+1. Buat fungsi inputPelanggan(), setelah itu panggil fungsinya
+
+CREATE PROCEDURE inputPelanggan(
+  IN kode VARCHAR(10),
+  IN nama VARCHAR(45),
+  IN jk CHAR(1),
+  IN tmp_lahir VARCHAR(30),
+  IN tgl_lahir DATE,
+  IN email VARCHAR(45),
+  IN kartu_id INT
+)
+BEGIN
+  INSERT INTO pelanggan(kode, nama, jk, tmp_lahir, tgl_lahir, email, kartu_id)
+  VALUES(kode, nama, jk, tmp_lahir, tgl_lahir, email, kartu_id);
+END;
+
+CALL inputPelanggan('001', 'Joko', 'L', 'Jakarta', '1990-10-10', 'joko@mail.com', 1);
+
+
+2. Buat fungsi showPelanggan(), setelah itu panggil fungsinya
+
+CREATE PROCEDURE showPelanggan()
+BEGIN
+  SELECT pelanggan.*, kartu.nama AS nama_kartu
+  FROM pelanggan
+  JOIN kartu ON pelanggan.kartu_id = kartu.id;
+END;
+
+CALL showPelanggan();
+
+
+3. Buat fungsi inputProduk(), setelah itu panggil fungsinya
+
+CREATE PROCEDURE inputProduk(
+  IN nama VARCHAR(45)
+)
+BEGIN
+  INSERT INTO jenis_produk(nama)
+  VALUES(nama);
+END;
+
+CALL inputProduk('Kemeja');
+
+4. Buat fungsi showProduk(), setelah itu panggil fungsinya
+CREATE PROCEDURE showProduk()
+BEGIN
+  SELECT * FROM jenis_produk;
+END;
+
+CALL showProduk();
+
+5. Buat fungsi totalPesanan(), setelah itu panggil fungsinya
+
+CREATE PROCEDURE totalPesanan(IN pelanggan_id INT)
+BEGIN
+  SELECT SUM(jumlah * harga) AS total_pesanan
+  FROM pesanan
+  WHERE pesanan.pelanggan_id = pelanggan_id;
+END;
+
+CALL totalPesanan(1);
+
+6. tampilkan seluruh pesanan dari semua pelanggan
+SELECT pelanggan.nama AS nama_pelanggan, jenis_produk.nama AS nama_produk, pesanan.jumlah, pesanan.harga, (pesanan.jumlah * pesanan.harga) AS total_harga
+FROM pesanan
+JOIN pelanggan ON pesanan.pelanggan_id = pelanggan.id
+JOIN jenis_produk ON pesanan.produk_id = jenis_produk.id;
+
+
+7. buatkan query panjang di atas menjadi sebuah view baru: pesanan_produk_vw (menggunakan join dari table pesanan,pelanggan dan produk)
+CREATE VIEW pesanan_produk_vw AS
+SELECT pelanggan.nama AS nama_pelanggan, jenis_produk.nama AS nama_produk, pesanan.jumlah, pesanan.harga, (pesanan.jumlah * pesanan.harga) AS total_harga
+FROM pesanan
+JOIN pelanggan ON pesanan.pelanggan_id = pelanggan.id
+JOIN jenis_produk ON pesanan.produk_id = jenis_produk.id;

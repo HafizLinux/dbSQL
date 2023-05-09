@@ -1,0 +1,26 @@
+-- menambahkan kolom yang dibutuhkan untuk trigger
+ALTER TABLE pesanan ADD COLUMN id_pelanggan INT NOT NULL;
+ALTER TABLE pembayaran ADD COLUMN id_pesanan INT NOT NULL, ADD COLUMN status_pembayaran ENUM('belum lunas', 'lunas') NOT NULL DEFAULT 'belum lunas';
+
+
+
+-- trigger untuk membuat record pembayaran setiap kali ada pesanan baru
+DELIMITER $$
+CREATE TRIGGER pesanan_after_insert AFTER INSERT ON pesanan
+FOR EACH ROW 
+BEGIN
+    INSERT INTO pembayaran (id_pesanan, status_pembayaran)
+    VALUES (NEW.id, 'belum lunas');
+END$$
+DELIMITER ;
+
+-- trigger untuk mengubah status_pembayaran menjadi "lunas" ketika pesanan sudah dibayar
+DELIMITER $$
+CREATE TRIGGER pembayaran_after_update AFTER UPDATE ON pembayaran
+FOR EACH ROW
+BEGIN
+    IF NEW.status_pembayaran = 'lunas' THEN
+        UPDATE pembayaran SET status_pembayaran = 'lunas' WHERE id_pesanan = NEW.id_pesanan;
+    END IF;
+END$$
+DELIMITER ;
